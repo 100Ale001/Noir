@@ -9,6 +9,11 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['sala_id'])) {
 
 $user_id = $_SESSION['user_id']; // ID del usuario que envía el mensaje
 $sala_id = $_SESSION['sala_id']; // ID de la sala donde se envía el mensaje
+
+if (!filter_var($user_id, FILTER_VALIDATE_INT) || !filter_var($sala_id, FILTER_VALIDATE_INT)) {
+    exit('Datos inválidos'); 
+}
+
 $mensaje = trim($_POST['mensaje'] ?? ''); // El mensaje enviado, quitando espacios
 
 // Si no se envió mensaje, no se guarda nada
@@ -23,6 +28,7 @@ $stmt->bind_param("iis", $user_id, $sala_id, $mensaje); // Asocia los valores
 // Ejecuta la consulta e informa si fue exitoso o no
 if ($stmt->execute()) {
     echo "OK"; // Éxito
+    $stmt->execute();
 } else {
     echo "Error: " . $stmt->error; // Muestra error si falla la consulta
 }
