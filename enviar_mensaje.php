@@ -16,9 +16,13 @@ if ($mensaje === '') {
     exit('Mensaje vacío'); // Termina el script
 }
 
+if (strlen($mensaje) > 255) {
+    exit('Mensaje demasiado largo'); // Termina el script si es muy largo
+}
+
 // Prepara la inserción en la tabla mensajes (sin imagen)
 $stmt = $conn->prepare("INSERT INTO mensajes (user_id, sala_id, mensaje, created_at) VALUES (?, ?, ?, NOW())");
-$stmt->bind_param("iis", $user_id, $sala_id, $mensaje); // Asocia los valores
+$stmt->bind_param("iis", $user_id, $sala_id, $msj); //Asocia los valores
 
 // Ejecuta la consulta e informa si fue exitoso o no
 if ($stmt->execute()) {
